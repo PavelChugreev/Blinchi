@@ -1,0 +1,110 @@
+.root {
+  margin-left: 0 !important;
+}
+
+.node {
+  position: relative;
+  padding: 5px;
+  border-radius: 7px;
+  margin-left: 198px;
+  box-sizing: border-box;
+
+  &:last-child {
+    &::before {
+      content: '';
+      position: absolute;
+      left: -30px;
+      width: 2px;
+      height: 51px;
+      background-color: rgb(238, 238, 238);
+    }
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: -30px;
+    display: block;
+    width: 2px;
+    height: 106%;
+    background-color: rgb(238, 238, 238);
+  }
+
+  .item-wrapper {
+    position: relative;
+    &::before {
+      content: '';
+      position: absolute;
+      left: -33px;
+      top: 63%;
+      width: 45px;
+      height: 2px;
+      background-color: rgb(238, 238, 238);
+    }
+
+    .item {
+      display: flex;
+      gap: 20px;
+      max-width: 320px;
+      padding: 10px;
+      border: 2px solid transparent;
+      border-radius: 7px;
+      cursor: pointer;
+
+      &:hover {
+        border-color: rgb(238, 238, 238);
+      }
+
+      .info {
+        display: grid;
+        justify-items: center;
+        width: 120px;
+  
+        .slider {
+          width: 100%;
+          background-color: rgb(223, 223, 223);
+          padding: 0 10px;
+          border-radius: 5px;
+        }
+      }
+
+      .buttons {
+        display: flex;
+        align-items: flex-end;
+        gap: 5px;
+        max-width: 200px;
+      }
+    }
+  }
+
+  .has-children {
+    &::after {
+      content: '';
+      position: absolute;
+      left: 130px;
+      top: 63%;
+      width: 40px;
+      height: 40px;
+      border: 2px solid rgb(238, 238, 238);
+      border-bottom: none;
+      border-left: none;
+      z-index: -100;
+    }
+
+    .circle {
+      position: absolute;
+      top: 50%;
+      right: -40px;
+      transform: translate(50%, -50%);
+      width: 10px;
+      height: 10px;
+      background-color: green;
+      border-radius: 50%;
+    }
+  }
+
+  .children-wrapper {
+    display: grid;
+    gap: 5px;
+  }
+}
