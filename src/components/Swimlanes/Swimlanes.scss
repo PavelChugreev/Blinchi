@@ -1,0 +1,26 @@
+.swimlanes {
+  width: 80%;
+  margin: 20px auto;
+  &__top, &__content {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__content {
+    gap: 10px;
+    margin-top: 10px;
+    .input {
+      min-width: 30%;
+      min-height: 300px;
+      .ant-input{
+        height: 100%;
+        margin-bottom: 10px;
+      }
+    }
+
+    .diagram {
+      min-width: 70%;
+      text-align: center;
+    }
+  }
+}
