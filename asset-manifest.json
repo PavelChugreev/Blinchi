@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/blinchi/static/css/main.9405892c.css",
-    "main.js": "/blinchi/static/js/main.957c969b.js",
+    "main.css": "/blinchi/static/css/main.af08f58c.css",
+    "main.js": "/blinchi/static/js/main.b9190fa3.js",
     "index.html": "/blinchi/index.html",
-    "main.9405892c.css.map": "/blinchi/static/css/main.9405892c.css.map",
-    "main.957c969b.js.map": "/blinchi/static/js/main.957c969b.js.map"
+    "main.af08f58c.css.map": "/blinchi/static/css/main.af08f58c.css.map",
+    "main.b9190fa3.js.map": "/blinchi/static/js/main.b9190fa3.js.map"
   },
   "entrypoints": [
-    "static/css/main.9405892c.css",
-    "static/js/main.957c969b.js"
+    "static/css/main.af08f58c.css",
+    "static/js/main.b9190fa3.js"
   ]
 }
