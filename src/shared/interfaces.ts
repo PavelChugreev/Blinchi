@@ -4,3 +4,9 @@ export interface INode {
   count: number;
   children : INode []
 }
+
+export interface IGraph {
+  id: string;
+  text: string;
+  type: string;
+}

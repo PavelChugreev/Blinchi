@@ -6,6 +6,7 @@ interface Props {
   mmd: string;
   id: string;
   className?: string;
+  touched?: boolean;
   onRender?: (svg?: string) => void;
   onClick?: () => void;
 }
@@ -17,7 +18,7 @@ const escape2Html = (str: string) => {
     .trim();
 }
 
-const  Mermaid = ({ mmd, id, className, onRender, onClick }: Props) => {
+const  Mermaid = ({ mmd, id, className, touched, onRender, onClick }: Props) => {
   const [svg, setSvg] = useState<string>('');
   const [error, setError] = useState<boolean>(false);
 
@@ -26,7 +27,7 @@ const  Mermaid = ({ mmd, id, className, onRender, onClick }: Props) => {
   }, [])
 
   useEffect(() => {
-    if (!mmd) {
+    if (mmd === null || mmd === undefined) {
       return;
     }
 
@@ -47,7 +48,7 @@ const  Mermaid = ({ mmd, id, className, onRender, onClick }: Props) => {
 
   return (
     <>
-      {error && <div>Syntax invalid</div>}
+      {touched && error && <div>Syntax invalid</div>}
       <div
         onClick={onClick}
         className={`mermaid ${className || ''} ${error ? 'error' : ''}`}

@@ -10,7 +10,9 @@ const App = () => {
     <Routes>
       <Route path="/" element={<Navigate to='/home'/>}/>
       <Route path="/home" element={<Home/>}/>
-      <Route path="/swimlanes" element={<Swimlanes/>}/>
+      <Route path="/swimlanes" element={<Swimlanes/>}>
+        <Route path=":id" element={<Swimlanes/>}/>
+      </Route>
       <Route path="/mock-api" element={<Mock/>}/>
       <Route path="*" element={<Navigate to='/'/>} />
     </Routes>
