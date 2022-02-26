@@ -3,7 +3,7 @@ import { errorMessages } from '../shared/enums/error-types';
 import HttpStatusCode from '../shared/enums/http-codes';
 
 export class BaseClient {
-  static baseUrl = process.env.REACT_APP_BASE_URL;
+  static baseUrl = 'https://blinchi.kn7dcruf72nfu.eu-west-2.cs.amazonlightsail.com'
 
   static get defaultOptions(): AxiosRequestConfig {
     return {

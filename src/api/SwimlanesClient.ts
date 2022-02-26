@@ -1,53 +1,29 @@
-import { mockResponse } from "../shared/initials";
 import { BaseClient } from "./BaseClient";
-import { v4 } from 'uuid';
+import { IGetAllDiagramsResponce, IGetDiagramResponce } from "../shared/interfaces";
 
-interface IRes {
-  id: string;
-  text: string
-}
-
-// TODO  refactor methods after API is completed
 export class SwimlanesClient extends BaseClient {
+
+  static getAllDiagrams() {
+    return this.get<IGetAllDiagramsResponce>('api/v1/Diagrams');
+  }
   
   static getDiagram(id: string) {
-    console.log('GET: ', id)
-    return new Promise<IRes>((resolve, reject) => {
-      setTimeout(() => {
-        if (!id) {
-          reject('id is required');
-          return;
-        }
-        resolve({ id, text: mockResponse[id] })
-      }, 2000);
-    })
+    return this.get<IGetDiagramResponce>(`api/v1/Diagrams/${id}`)
   }
 
-  static saveDiagram(text: string) {
-    return new Promise<any>((resolve, reject) => {
-      setTimeout(() => {
-        if (text === null || text === undefined) {
-          reject('text is required');
-          return;
-        }
-        resolve({ id: v4(), text: mockResponse[3] })
-      }, 2000);
-    })
+  static addDiagram(text: string) {
+    return this.post<any, IGetDiagramResponce>('api/v1/Diagrams', {
+      type: "Swimlane",
+      data: window.btoa(text),
+      updatedBy: new Date()
+    });
   }
 
-  static updateDiagram(id: string = '', text: string) {
-    return new Promise<any>((resolve, reject) => {
-      setTimeout(() => {
-        if(!id){
-          reject('id is required');
-          return;
-        }
-        if (text === null || text === undefined) {
-          reject('text is required');
-          return;
-        }
-        resolve({ text })
-      }, 2000);
+  static updateDiagram(id: string, data: string) {
+    return this.put(`api/v1/Diagrams/${id}`, {
+      id,
+      data: window.btoa(data),
+      updatedBy: new Date()
     })
   }
 }

@@ -4,7 +4,6 @@ import { Button, Spin } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import Mermaid from "../../shared/components/Mermaid/Mermaid";
 import { SwimlanesClient } from "../../api/SwimlanesClient";
-import { LocalStorageService } from "../../shared/services/localStorageService";
 import "./Swimlanes.scss"
 
 const Swimlanes = () => {
@@ -23,8 +22,8 @@ const Swimlanes = () => {
     setLoading({...loading, page: true});
 
     SwimlanesClient.getDiagram(id)
-      .then((res) => {
-        setValue(res.text)
+      .then(({ diagram }) => {
+        setValue(window.atob(diagram.data))
       })
       .catch((e) =>  {
         console.log(e);
@@ -42,16 +41,12 @@ const Swimlanes = () => {
   }, [value, id])
 
   const update = useCallback(() => {
+    if(!id) {
+      return;
+    }
     setLoading({ page: true, save: true });
 
     SwimlanesClient.updateDiagram(id, value)
-    .then((res) => {
-      const graphs = LocalStorageService.get('graphs')?.map(g => {
-        return g.id === id ? {...g, text: res.text} : g;
-      })
-      LocalStorageService.set('graphs', graphs);
-      setValue(res.text);
-    })
     .catch((e) =>  console.log(e))
     .finally(() => setLoading({ page: false, save: false }))
   }, [id, value])
@@ -59,23 +54,10 @@ const Swimlanes = () => {
   const save = useCallback(() => {
     setLoading({...loading, save: true});
 
-    SwimlanesClient.saveDiagram(value)
-      .then((res) => {
+    SwimlanesClient.addDiagram(value)
+      .then(({ diagram }) => {
         setLoading({...loading, save: false});
-        navigate(`/swimlanes/${res.id}`);
-
-        const graphs = LocalStorageService.get('graphs');
-        
-        if(graphs){
-          LocalStorageService.set('graphs', [
-            ...graphs,
-            { id: res.id, text: value, type: 'swim' }
-          ])
-          return;
-        }
-        LocalStorageService.set('graphs', [{
-          id: res.id, text: value, type: 'swim'
-        }])
+        navigate(`/swimlanes/${diagram.id}`);
       })
       .catch((e) => {
         setLoading({...loading, save: false});
@@ -113,7 +95,6 @@ const Swimlanes = () => {
         <Button onClick={() => setValue('')}>Clear</Button>
         <Button type="primary" loading={loading.save} onClick={() => onSubmit()}>{id ? 'Update' : 'Save'}</Button>
       </div>
-      
     </div>
   )
 }

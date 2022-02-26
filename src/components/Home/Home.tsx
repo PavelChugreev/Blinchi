@@ -1,11 +1,20 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Button } from "antd";
-import { LocalStorageService } from "../../shared/services/localStorageService";
-import { IGraph } from "../../shared/interfaces";
+import { Button, List, Divider } from "antd";
+import { IDiagram } from "../../shared/interfaces";
+import { SwimlanesClient } from "../../api/SwimlanesClient";
 import './Home.scss';
 
 const Home = () => {
-  const graphs: IGraph[] | null = LocalStorageService.get('graphs');
+  const [diagrams, setDiagrams] = useState<IDiagram[]>([])
+
+  useEffect(() => {
+    SwimlanesClient.getAllDiagrams()
+      .then(res => {
+        setDiagrams(res.diagrams.reverse())
+      })
+      .catch(e => console.log(e))
+  }, [])
 
   return (
     <div className="home">
@@ -19,16 +28,26 @@ const Home = () => {
           <Link to='/mock-api'>Mock Api</Link>
         </Button>
       </div>
-      <ul className="graphs-list">
-        {graphs && graphs.map((graph, i) => {
-          return (
-            <li className="graph" key={graph.id}>
-              <Link to={`/swimlanes/${graph.id}`}>{graph.id}</Link>
-              <div>{graph.type}</div>
-            </li>
-          )
-        })}
-      </ul>
+      {diagrams &&
+        <>
+          <Divider orientation="left"><h3>Diagrams</h3></Divider>
+          <List
+            bordered
+            dataSource={diagrams}
+            renderItem={d => {
+              const date = new Date(d.createdAt)
+              console.log(date);
+              
+              return (
+              <List.Item>
+                <div>{d.type}</div>
+                <div>{`${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`}</div>
+                <Link to={`/swimlanes/${d.id}`}>{d.id}</Link>
+              </List.Item>
+            )}}
+          />
+        </>
+      }
     </div>
   )
 }
