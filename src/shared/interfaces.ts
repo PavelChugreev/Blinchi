@@ -1,3 +1,5 @@
+import { DiagramType, UpdetedByTypes } from "./enums/diagrams-types";
+
 export interface INode {
   id: string;
   name: string;
@@ -7,11 +9,18 @@ export interface INode {
 
 export interface IDiagram {
   id: string;
-  createdAt: string;
-  type: string;
+  createdAt: Date;
+  type: DiagramType;
   data: string;
-  updatedBy: string;
-  updatedAt: string;
+  updatedBy: UpdetedByTypes;
+  updatedAt: Date;
+}
+
+export interface IDiagramRequest {
+  id?: string;
+  type?: string;
+  data: string;
+  updatedBy: UpdetedByTypes;
 }
 
 export interface IGetAllDiagramsResponce {
