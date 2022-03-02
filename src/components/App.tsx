@@ -1,4 +1,4 @@
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Outlet, Route, Routes } from "react-router-dom";
 import Home from "./Home/Home";
 import Mock from "./Mock/Mock";
 import Swimlanes from "./Swimlanes/Swimlanes";
@@ -8,13 +8,15 @@ import './App.scss';
 const App = () => {
   return (
     <Routes>
-      <Route path="/" element={<Navigate to='/home'/>}/>
-      <Route path="/home" element={<Home/>}/>
-      <Route path="/swimlanes" element={<Swimlanes/>}>
-        <Route path=":id" element={<Swimlanes/>}/>
+      <Route path="" element={<Navigate to='blinchi' />} />
+      <Route path="blinchi" element={<Outlet/>}>
+        <Route index element={<Home/>}/>
+        <Route path="swimlanes" element={<Swimlanes/>}>
+          <Route path=":id" element={<Swimlanes/>}/>
+        </Route>
+        <Route path="mock-api" element={<Mock/>}/>
       </Route>
-      <Route path="/mock-api" element={<Mock/>}/>
-      <Route path="*" element={<Navigate to='/'/>} />
+      <Route path="*" element={<Navigate to='blinchi' />}/>
     </Routes>
   )
 }

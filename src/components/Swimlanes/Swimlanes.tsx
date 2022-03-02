@@ -4,8 +4,8 @@ import { Button, Spin } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import Mermaid from "../../shared/components/Mermaid/Mermaid";
 import { SwimlanesClient } from "../../api/SwimlanesClient";
-import "./Swimlanes.scss"
 import { swimlanesInitial } from "../../shared/initials";
+import "./Swimlanes.scss"
 
 const Swimlanes: React.FC<{prefix?: string}> = ({prefix = 'sequenceDiagram'}) => {
   const [value, setValue] = useState<string>(swimlanesInitial);
@@ -28,7 +28,7 @@ const Swimlanes: React.FC<{prefix?: string}> = ({prefix = 'sequenceDiagram'}) =>
       })
       .catch((e) =>  {
         console.log(e);
-        navigate('/swimlanes');
+        navigate('');
       })
       .finally(() => setLoading({...loading, page: false}))
   }, [id])
@@ -58,7 +58,7 @@ const Swimlanes: React.FC<{prefix?: string}> = ({prefix = 'sequenceDiagram'}) =>
     SwimlanesClient.addDiagram(value)
       .then(({ diagram }) => {
         setLoading({...loading, save: false});
-        navigate(`/swimlanes/${diagram.id}`);
+        navigate(diagram.id);
       })
       .catch((e) => {
         setLoading({...loading, save: false});
@@ -67,7 +67,7 @@ const Swimlanes: React.FC<{prefix?: string}> = ({prefix = 'sequenceDiagram'}) =>
   }, [value])
 
   const valueWithoutPrefix = useMemo(() => value.replace(prefix + '\n', ''), [value, prefix]);
-  const addPrefix = useCallback((value: string = '') => `${prefix}\n${value}`, [prefix])
+  const addPrefix = useCallback((value: string = '') => `${prefix}\n${value}`, [prefix]);
 
   return (
     <div className="swimlanes">

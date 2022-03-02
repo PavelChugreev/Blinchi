@@ -26,11 +26,11 @@ const Home = () => {
       <h1>Blinchi.com</h1>
       <div className='nav-buttons'>
         <Button>
-          <Link to='/swimlanes'>Swimlanes</Link>
+          <Link to='swimlanes'>Swimlanes</Link>
         </Button>
         <Button>Entity Relationship Diagram</Button>
         <Button>
-          <Link to='/mock-api'>Mock Api</Link>
+          <Link to='mock-api'>Mock Api</Link>
         </Button>
       </div>
       {diagrams &&
@@ -57,7 +57,7 @@ const Home = () => {
                 <div>{d.type}</div>
                 <div>{created}</div>
                 <div>{updated}</div>
-                <Link to={`/swimlanes/${d.id}`}>{d.id}</Link>
+                <Link to={`swimlanes/${d.id}`}>{d.id}</Link>
               </List.Item>
             )}}
           />
