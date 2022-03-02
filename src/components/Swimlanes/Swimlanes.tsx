@@ -11,6 +11,7 @@ const Swimlanes: React.FC<{prefix?: string}> = ({prefix = 'sequenceDiagram'}) =>
   const [value, setValue] = useState<string>(swimlanesInitial);
   const [touched, setTouched] = useState<boolean>(false);
   const [loading, setLoading] = useState<any>({page: false, save: false});
+  const [syntaxError, setSyntaxError] = useState<boolean>(false);
 
   const { id } = useParams();
   const navigate = useNavigate();
@@ -91,7 +92,7 @@ const Swimlanes: React.FC<{prefix?: string}> = ({prefix = 'sequenceDiagram'}) =>
         </div>
         <div className="diagram">
           {!loading.page
-            ? <Mermaid id='diagram' mmd={value} touched={touched}/> 
+            ? <Mermaid id='diagram' mmd={value} touched={touched} emitError={(val) => setSyntaxError(val)}/> 
             : <Spin tip='Loading...' size="large"/>}
         </div>
       </div>
@@ -100,6 +101,7 @@ const Swimlanes: React.FC<{prefix?: string}> = ({prefix = 'sequenceDiagram'}) =>
         <Button
           type="primary"
           loading={loading.save}
+          disabled={syntaxError}
           onClick={() => onSubmit()}
         >
           {id ? 'Update' : 'Save'}

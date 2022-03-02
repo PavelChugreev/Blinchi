@@ -8,6 +8,7 @@ interface Props {
   className?: string;
   touched?: boolean;
   onRender?: (svg?: string) => void;
+  emitError?: (error: boolean) => void
   onClick?: () => void;
 }
 
@@ -18,7 +19,7 @@ const escape2Html = (str: string) => {
     .trim();
 }
 
-const  Mermaid = ({ mmd, id, className, touched, onRender, onClick }: Props) => {
+const  Mermaid = ({ mmd, id, className, touched, onRender, emitError, onClick }: Props) => {
   const [svg, setSvg] = useState<string>('');
   const [error, setError] = useState<boolean>(false);
 
@@ -30,17 +31,26 @@ const  Mermaid = ({ mmd, id, className, touched, onRender, onClick }: Props) => 
     if (mmd === null || mmd === undefined) {
       return;
     }
+     
+    if(/[\u0400-\u04FF]/m.test(mmd)) {
+      setError(true);
+      emitError?.(true);
+      return;
+    }
 
+  
     try {
       if(mermaid.parse(mmd)){
         mermaid.mermaidAPI.render(id, escape2Html(mmd), (svg) => {
           setSvg(svg);
           setError(false);
+          emitError?.(false);
           onRender?.(svg);
         })
       }
     } catch {
       setError(true);
+      emitError?.(true);
       console.log('Syntax invalid');
       return;
     }
