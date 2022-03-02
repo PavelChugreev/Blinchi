@@ -1,14 +1,15 @@
 import { BaseClient } from "./BaseClient";
+import { AxiosRequestConfig } from "axios";
 import { IDiagramRequest, IGetAllDiagramsResponce, IGetDiagramResponce } from "../shared/interfaces";
 import { diagramTypes, updatedByType } from "../shared/enums/diagrams-types";
 
 export class SwimlanesClient extends BaseClient {
 
-  static getAllDiagrams(config?) {
+  static getAllDiagrams(config?: AxiosRequestConfig) {
     return this.get<IGetAllDiagramsResponce>('api/v1/Diagrams?', {
-      ...config,
       params: {
-        SortBy: 'updatedat_desc'
+        SortBy: 'updatedat_desc',
+        ...config?.params
       }
     });
   }
