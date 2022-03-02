@@ -52,8 +52,6 @@ const Home = () => {
               const created = getFullDate(new Date(d.createdAt));
               const updated = getFullDate(new Date(d.updatedAt));
 
-              const da = new Date()
-              console.log(da, da.getMonth())
               return (
               <List.Item className='row'>
                 <div>{d.type}</div>

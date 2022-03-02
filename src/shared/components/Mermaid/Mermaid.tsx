@@ -24,7 +24,7 @@ const  Mermaid = ({ mmd, id, className, touched, onRender, onClick }: Props) => 
 
   useEffect(() => {
     mermaid.initialize({ startOnLoad: false })
-  }, [])
+  }, []);
 
   useEffect(() => {
     if (mmd === null || mmd === undefined) {
@@ -44,11 +44,15 @@ const  Mermaid = ({ mmd, id, className, touched, onRender, onClick }: Props) => 
       console.log('Syntax invalid');
       return;
     }
-  }, [mmd])
+  }, [mmd]);
+
+  useEffect(() => {
+    document.getElementById('ddiagram')?.remove();
+  });
 
   return (
     <>
-      {touched && error && <div>Syntax invalid</div>}
+      {/* {touched && error && <div>Syntax invalid</div>} */}
       <div
         onClick={onClick}
         className={`mermaid ${className || ''} ${error ? 'error' : ''}`}

@@ -1,7 +1,7 @@
-export const swimlanesInitial = `graph TD
-  A[Client] --> B[Load Balancer]
-  B --> C[Server01]
-  B --> D[Server02]`
+export const swimlanesInitial = `sequenceDiagram
+Alice->>John: Hello John, how are you?
+John-->>Alice: Great!
+Alice-)John: See you later!`
 
 export const mockResponse = {
   1: `sequenceDiagram

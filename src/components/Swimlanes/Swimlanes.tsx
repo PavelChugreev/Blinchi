@@ -1,13 +1,14 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useMemo } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Button, Spin } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import Mermaid from "../../shared/components/Mermaid/Mermaid";
 import { SwimlanesClient } from "../../api/SwimlanesClient";
 import "./Swimlanes.scss"
+import { swimlanesInitial } from "../../shared/initials";
 
-const Swimlanes = () => {
-  const [value, setValue] = useState<string>('');
+const Swimlanes: React.FC<{prefix?: string}> = ({prefix = 'sequenceDiagram'}) => {
+  const [value, setValue] = useState<string>(swimlanesInitial);
   const [touched, setTouched] = useState<boolean>(false);
   const [loading, setLoading] = useState<any>({page: false, save: false});
 
@@ -65,6 +66,9 @@ const Swimlanes = () => {
       })
   }, [value])
 
+  const valueWithoutPrefix = useMemo(() => value.replace(prefix + '\n', ''), [value, prefix]);
+  const addPrefix = useCallback((value: string = '') => `${prefix}\n${value}`, [prefix])
+
   return (
     <div className="swimlanes">
       <div className="swimlanes__top">
@@ -76,11 +80,11 @@ const Swimlanes = () => {
       <div className="swimlanes__content">
         <div className="input">
         <TextArea
-          value={value}
+          value={valueWithoutPrefix}
           disabled={loading.page || loading.save}
           onBlur={() => setTouched(true)}
           onChange={(e) => {
-            setValue(e.target.value || '');
+            setValue(addPrefix(e.target.value));
             setTouched(true);
           }}
         />
@@ -93,7 +97,13 @@ const Swimlanes = () => {
       </div>
       <div className="swimlanes__buttons">
         <Button onClick={() => setValue('')}>Clear</Button>
-        <Button type="primary" loading={loading.save} onClick={() => onSubmit()}>{id ? 'Update' : 'Save'}</Button>
+        <Button
+          type="primary"
+          loading={loading.save}
+          onClick={() => onSubmit()}
+        >
+          {id ? 'Update' : 'Save'}
+        </Button>
       </div>
     </div>
   )
