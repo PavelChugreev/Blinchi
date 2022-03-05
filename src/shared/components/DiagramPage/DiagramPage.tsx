@@ -7,8 +7,8 @@ import Mermaid from "../../../shared/components/Mermaid/Mermaid";
 import { DiagramsClient } from "../../../api/DiagramsClient";
 import { exportAsImage } from "../../../shared/utils";
 import { diagramPrefix, diagramTitles, diagramTypes } from "../../../shared/enums/diagrams-types";
-import "./DiagramPage.scss"
 import { initials } from "../../initials";
+import "./DiagramPage.scss"
 
 const DiagramPage: React.FC<{type: diagramTypes}> = ({ type }) => {
   const [value, setValue] = useState<string>(initials[type]);

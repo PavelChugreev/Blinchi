@@ -5,7 +5,7 @@ import { Pagination } from 'antd';
 import { IDiagram } from "../../shared/interfaces";
 import { DiagramsClient } from "../../api/DiagramsClient";
 import { getFullDate, getTime } from "../../shared/utils";
-import { diagramPath, diagramTypes } from "../../shared/enums/diagrams-types";
+import { diagramPath, diagramTitles, diagramTypes } from "../../shared/enums/diagrams-types";
 import './Home.scss';
 
 const Home = () => {
@@ -49,10 +49,10 @@ const Home = () => {
       <h1>Blinchi.com</h1>
       <div className='nav-buttons'>
         <Button>
-          <Link to={diagramPath[diagramTypes.SWIMLANE]}>Swimlanes</Link>
+          <Link to={diagramPath[diagramTypes.SWIMLANE]}>{diagramTitles[diagramTypes.SWIMLANE]}</Link>
         </Button>
         <Button>
-          <Link to={diagramPath[diagramTypes.ERD]}>Entity Relationship Diagram</Link>
+          <Link to={diagramPath[diagramTypes.ERD]}>{diagramTitles[diagramTypes.ERD]}</Link>
         </Button>
         <Button>
           <Link to='mock-api'>Mock Api</Link>

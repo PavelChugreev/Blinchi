@@ -24,4 +24,4 @@ export enum updatedByType {
   WEB_REACT = "Web:React"
 }
 
-export type UpdetedByTypes = updatedByType.WEB_REACT
+export type UpdetedByTypes = updatedByType.WEB_REACT;
