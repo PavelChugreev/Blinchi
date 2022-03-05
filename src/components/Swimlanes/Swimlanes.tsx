@@ -1,10 +1,12 @@
-import { useCallback, useEffect, useState, useMemo } from "react";
+import { useCallback, useEffect, useState, useMemo, useRef } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Button, Spin } from "antd";
 import TextArea from "antd/lib/input/TextArea";
+import { DownloadOutlined } from '@ant-design/icons';
 import Mermaid from "../../shared/components/Mermaid/Mermaid";
 import { SwimlanesClient } from "../../api/SwimlanesClient";
 import { swimlanesInitial } from "../../shared/initials";
+import { exportAsImage } from "../../shared/utils";
 import "./Swimlanes.scss"
 
 const Swimlanes: React.FC<{prefix?: string}> = ({prefix = 'sequenceDiagram'}) => {
@@ -15,6 +17,8 @@ const Swimlanes: React.FC<{prefix?: string}> = ({prefix = 'sequenceDiagram'}) =>
 
   const { id } = useParams();
   const navigate = useNavigate();
+
+  const diagram: any = useRef();
 
   useEffect(() => {
     if (!id) {
@@ -32,7 +36,7 @@ const Swimlanes: React.FC<{prefix?: string}> = ({prefix = 'sequenceDiagram'}) =>
         navigate('');
       })
       .finally(() => setLoading({...loading, page: false}))
-  }, [id])
+  }, [id]);
 
   const onSubmit = useCallback(() => {
     if (id) {
@@ -40,7 +44,9 @@ const Swimlanes: React.FC<{prefix?: string}> = ({prefix = 'sequenceDiagram'}) =>
       return;
     }
     save();
-  }, [value, id])
+  }, [value, id]);
+
+  const onExport = useCallback(() => exportAsImage(diagram.current, 'swimlanes-diagramm'), [diagram]);
 
   const update = useCallback(() => {
     if(!id) {
@@ -51,7 +57,7 @@ const Swimlanes: React.FC<{prefix?: string}> = ({prefix = 'sequenceDiagram'}) =>
     SwimlanesClient.updateDiagram(id, value)
     .catch((e) =>  console.log(e))
     .finally(() => setLoading({ page: false, save: false }))
-  }, [id, value])
+  }, [id, value]);
 
   const save = useCallback(() => {
     setLoading({...loading, save: true});
@@ -65,7 +71,7 @@ const Swimlanes: React.FC<{prefix?: string}> = ({prefix = 'sequenceDiagram'}) =>
         setLoading({...loading, save: false});
         console.log(e);
       })
-  }, [value])
+  }, [value]);
 
   const valueWithoutPrefix = useMemo(() => value.replace(prefix + '\n', ''), [value, prefix]);
   const addPrefix = useCallback((value: string = '') => `${prefix}\n${value}`, [prefix]);
@@ -74,9 +80,17 @@ const Swimlanes: React.FC<{prefix?: string}> = ({prefix = 'sequenceDiagram'}) =>
     <div className="swimlanes">
       <div className="swimlanes__top">
         <h2>Swimlanes</h2>
-        <Button>
-          <Link to='/'>Home</Link>
-        </Button>
+        <div className="swimlanes__top_buttons">
+          <Button
+            icon={<DownloadOutlined/>}
+            onClick={onExport}
+            disabled={loading.page}>
+              Export img
+            </Button>
+          <Button>
+            <Link to='/'>Home</Link>
+          </Button>
+        </div>
       </div>
       <div className="swimlanes__content">
         <div className="input">
@@ -90,7 +104,7 @@ const Swimlanes: React.FC<{prefix?: string}> = ({prefix = 'sequenceDiagram'}) =>
           }}
         />
         </div>
-        <div className="diagram">
+        <div ref={diagram} className="diagram">
           {!loading.page
             ? <Mermaid id='diagram' mmd={value} touched={touched} emitError={(val) => setSyntaxError(val)}/> 
             : <Spin tip='Loading...' size="large"/>}

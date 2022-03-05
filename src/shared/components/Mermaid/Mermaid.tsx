@@ -1,5 +1,5 @@
 import mermaid from 'mermaid'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import './Mermaid.scss'
 
 interface Props {
@@ -11,6 +11,8 @@ interface Props {
   emitError?: (error: boolean) => void
   onClick?: () => void;
 }
+
+const cyrilicRegexp = /[\u0400-\u04FF]/m;
 
 const escape2Html = (str: string) => {
   const arrEntities = { lt: '<', gt: '>', nbsp: ' ', amp: '&', quot: '"' }
@@ -32,12 +34,11 @@ const  Mermaid = ({ mmd, id, className, touched, onRender, emitError, onClick }:
       return;
     }
      
-    if(/[\u0400-\u04FF]/m.test(mmd)) {
+    if(cyrilicRegexp.test(mmd)) {
       setError(true);
       emitError?.(true);
       return;
     }
-
   
     try {
       if(mermaid.parse(mmd)){
@@ -56,20 +57,19 @@ const  Mermaid = ({ mmd, id, className, touched, onRender, emitError, onClick }:
     }
   }, [mmd]);
 
+  const ref = useRef(null);
+
   useEffect(() => {
     document.getElementById('ddiagram')?.remove();
   });
 
   return (
-    <>
-      {/* {touched && error && <div>Syntax invalid</div>} */}
-      <div
-        onClick={onClick}
-        className={`mermaid ${className || ''} ${error ? 'error' : ''}`}
-        dangerouslySetInnerHTML={{ __html: svg }}
-      ></div>
-    </>
-
+    <div
+      ref={ref}
+      onClick={onClick}
+      className={`mermaid ${className || ''} ${error ? 'error' : ''}`}
+      dangerouslySetInnerHTML={{ __html: svg }}
+    ></div>
   )
 }
 
