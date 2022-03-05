@@ -1,9 +1,24 @@
 export enum diagramTypes {
-  SWIMLANES = 'Swimlane',
+  SWIMLANE = 'Swimlane',
   ERD ='ERD'
 }
 
-export type DiagramType = diagramTypes.SWIMLANES | diagramTypes.ERD;
+export const diagramTitles = {
+  [diagramTypes.SWIMLANE]: 'Swimlane',
+  [diagramTypes.ERD]: 'Entity Relationship Diagram'
+}
+
+export const diagramPrefix = {
+  [diagramTypes.SWIMLANE]: 'sequenceDiagram',
+  [diagramTypes.ERD]: 'classDiagram'
+}
+
+export const diagramPath = {
+  [diagramTypes.SWIMLANE]: 'swimlane',
+  [diagramTypes.ERD]: 'erd'
+}
+
+export type DiagramType = diagramTypes.SWIMLANE | diagramTypes.ERD;
 
 export enum updatedByType {
   WEB_REACT = "Web:React"

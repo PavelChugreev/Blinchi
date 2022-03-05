@@ -3,20 +3,15 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { Button, Spin } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import { DownloadOutlined } from '@ant-design/icons';
-import Mermaid from "../../shared/components/Mermaid/Mermaid";
-import { DiagramsClient } from "../../api/DiagramsClient";
-import { initials } from "../../shared/initials";
-import { exportAsImage } from "../../shared/utils";
-import { diagramTypes } from "../../shared/enums/diagrams-types";
-import "./Swimlanes.scss"
-import DiagramPage from "../../shared/components/DiagramPage/DiagramPage";
+import Mermaid from "../../../shared/components/Mermaid/Mermaid";
+import { DiagramsClient } from "../../../api/DiagramsClient";
+import { exportAsImage } from "../../../shared/utils";
+import { diagramPrefix, diagramTitles, diagramTypes } from "../../../shared/enums/diagrams-types";
+import "./DiagramPage.scss"
+import { initials } from "../../initials";
 
-const Swimlanes = () => {
-  return <DiagramPage type={diagramTypes.SWIMLANE}/>
-}
-
-const Swimlanes1: React.FC<{prefix?: string}> = ({prefix = 'sequenceDiagram'}) => {
-  const [value, setValue] = useState<string>(initials[diagramTypes.SWIMLANE]);
+const DiagramPage: React.FC<{type: diagramTypes}> = ({ type }) => {
+  const [value, setValue] = useState<string>(initials[type]);
   const [loading, setLoading] = useState<any>({page: false, save: false});
   const [syntaxError, setSyntaxError] = useState<boolean>(false);
 
@@ -51,7 +46,7 @@ const Swimlanes1: React.FC<{prefix?: string}> = ({prefix = 'sequenceDiagram'}) =
     save();
   }, [value, id]);
 
-  const onExport = useCallback(() => exportAsImage(diagram.current, 'swimlanes-diagram'), [diagram]);
+  const onExport = useCallback(() => exportAsImage(diagram.current, `${type}-diagram`), [diagram]);
 
   const update = useCallback(() => {
     if(!id) {
@@ -67,7 +62,7 @@ const Swimlanes1: React.FC<{prefix?: string}> = ({prefix = 'sequenceDiagram'}) =
   const save = useCallback(() => {
     setLoading({...loading, save: true});
 
-    DiagramsClient.addDiagram(value, diagramTypes.SWIMLANE)
+    DiagramsClient.addDiagram(value, type)
       .then(({ diagram }) => {
         setLoading({...loading, save: false});
         navigate(diagram.id);
@@ -78,14 +73,14 @@ const Swimlanes1: React.FC<{prefix?: string}> = ({prefix = 'sequenceDiagram'}) =
       })
   }, [value]);
 
-  const valueWithoutPrefix = useMemo(() => value?.replace(prefix + '\n', ''), [value, prefix]);
-  const addPrefix = useCallback((value: string = '') => `${prefix}\n${value}`, [prefix]);
+  const valueWithoutPrefix = useMemo(() => value.replace(diagramPrefix[type] + '\n', ''), [value, type]);
+  const addPrefix = useCallback((value: string = '') => `${diagramPrefix[type]}\n${value}`, [type]);
 
   return (
-    <div className="swimlanes">
-      <div className="swimlanes__top">
-        <h2>Swimlanes</h2>
-        <div className="swimlanes__top_buttons">
+    <div className="diagram">
+      <div className="diagram__top">
+        <h2>{diagramTitles[type]}</h2>
+        <div className="diagram__top_buttons">
           <Button
             icon={<DownloadOutlined/>}
             onClick={onExport}
@@ -97,8 +92,8 @@ const Swimlanes1: React.FC<{prefix?: string}> = ({prefix = 'sequenceDiagram'}) =
           </Button>
         </div>
       </div>
-      <div className="swimlanes__content">
-        <div className="swimlanes__content_input">
+      <div className="diagram__content">
+        <div className="diagram__content_input">
         <TextArea
           value={valueWithoutPrefix}
           disabled={loading.page || loading.save}
@@ -107,13 +102,13 @@ const Swimlanes1: React.FC<{prefix?: string}> = ({prefix = 'sequenceDiagram'}) =
           }}
         />
         </div>
-        <div ref={diagram} className="swimlanes__content_diagram">
+        <div ref={diagram} className="diagram__content_diagram">
           {!loading.page
             ? <Mermaid id='diagram' mmd={value} emitError={(val) => setSyntaxError(val)}/> 
             : <Spin tip='Loading...' size="large"/>}
         </div>
       </div>
-      <div className="swimlanes__buttons">
+      <div className="diagram__buttons">
         <Button onClick={() => setValue('')}>Clear</Button>
         <Button
           type="primary"
@@ -128,4 +123,4 @@ const Swimlanes1: React.FC<{prefix?: string}> = ({prefix = 'sequenceDiagram'}) =
   )
 }
 
-export default Swimlanes;
+export default DiagramPage;

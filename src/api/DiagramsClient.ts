@@ -3,7 +3,7 @@ import { AxiosRequestConfig } from "axios";
 import { IDiagramRequest, IGetAllDiagramsResponce, IGetDiagramResponce } from "../shared/interfaces";
 import { diagramTypes, updatedByType } from "../shared/enums/diagrams-types";
 
-export class SwimlanesClient extends BaseClient {
+export class DiagramsClient extends BaseClient {
 
   static getAllDiagrams(config?: AxiosRequestConfig) {
     return this.get<IGetAllDiagramsResponce>('api/v1/Diagrams?', {
@@ -18,9 +18,9 @@ export class SwimlanesClient extends BaseClient {
     return this.get<IGetDiagramResponce>(`api/v1/Diagrams/${id}`)
   }
 
-  static addDiagram(text: string) {
+  static addDiagram(text: string, type: diagramTypes) {
     return this.post<IDiagramRequest, IGetDiagramResponce>('api/v1/Diagrams', {
-      type: diagramTypes.SWIMLANES,
+      type,
       data: window.btoa(text),
       updatedBy: updatedByType.WEB_REACT
     });

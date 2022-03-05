@@ -3,8 +3,9 @@ import { Link } from "react-router-dom";
 import { Button, List, Divider } from "antd";
 import { Pagination } from 'antd';
 import { IDiagram } from "../../shared/interfaces";
-import { SwimlanesClient } from "../../api/SwimlanesClient";
+import { DiagramsClient } from "../../api/DiagramsClient";
 import { getFullDate, getTime } from "../../shared/utils";
+import { diagramPath, diagramTypes } from "../../shared/enums/diagrams-types";
 import './Home.scss';
 
 const Home = () => {
@@ -18,7 +19,7 @@ const Home = () => {
   useEffect(() => {
     setLoading(true);
 
-    SwimlanesClient.getAllDiagrams()
+    DiagramsClient.getAllDiagrams()
       .then(res => {
         setDiagrams(res.diagrams);
         setPagination({...pagination, total: res.totalAmount});
@@ -30,7 +31,7 @@ const Home = () => {
   const onChangePage = useCallback((page: number, size: number) => {
     setLoading(true);
 
-    SwimlanesClient.getAllDiagrams({
+    DiagramsClient.getAllDiagrams({
       params: {  Skip: (page - 1) * size }
     })
       .then(res => {
@@ -48,9 +49,11 @@ const Home = () => {
       <h1>Blinchi.com</h1>
       <div className='nav-buttons'>
         <Button>
-          <Link to='swimlanes'>Swimlanes</Link>
+          <Link to={diagramPath[diagramTypes.SWIMLANE]}>Swimlanes</Link>
         </Button>
-        <Button>Entity Relationship Diagram</Button>
+        <Button>
+          <Link to={diagramPath[diagramTypes.ERD]}>Entity Relationship Diagram</Link>
+        </Button>
         <Button>
           <Link to='mock-api'>Mock Api</Link>
         </Button>
@@ -77,12 +80,12 @@ const Home = () => {
               const updatedTime = getTime(new Date(d.updatedAt));
 
               return (
-              <List.Item className='row'>
-                <div>{d.type}</div>
-                <div>{`${created} - ${createdTime}`}</div>
-                <div>{`${updated} - ${updatedTime}`}</div>
-                <Link to={`swimlanes/${d.id}`}>{d.id}</Link>
-              </List.Item>
+                <List.Item className='row'>
+                  <div>{d.type}</div>
+                  <div>{`${created} - ${createdTime}`}</div>
+                  <div>{`${updated} - ${updatedTime}`}</div>
+                  <Link to={`${diagramPath[d.type]}/${d.id}`}>{d.id}</Link>
+                </List.Item>
             )}}
           />
         </div>
@@ -93,9 +96,7 @@ const Home = () => {
           current={pagination.current}
           total={pagination.total}
           pageSize={10}
-          onChange={(page, size) => {
-            onChangePage(page, size);
-          }} 
+          onChange={(page, size) => onChangePage(page, size)} 
         />
       </div>
     </div>

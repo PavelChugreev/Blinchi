@@ -8,15 +8,15 @@ import { DiagramsClient } from "../../api/DiagramsClient";
 import { initials } from "../../shared/initials";
 import { exportAsImage } from "../../shared/utils";
 import { diagramTypes } from "../../shared/enums/diagrams-types";
-import "./Swimlanes.scss"
 import DiagramPage from "../../shared/components/DiagramPage/DiagramPage";
+import "./Erd.scss"
 
-const Swimlanes = () => {
-  return <DiagramPage type={diagramTypes.SWIMLANE}/>
+const Erd = () => {
+  return <DiagramPage type={diagramTypes.ERD}/>
 }
 
-const Swimlanes1: React.FC<{prefix?: string}> = ({prefix = 'sequenceDiagram'}) => {
-  const [value, setValue] = useState<string>(initials[diagramTypes.SWIMLANE]);
+const Erd1: React.FC<{prefix?: string}> = ({prefix = 'classDiagram'}) => {
+  const [value, setValue] = useState<string>(initials[diagramTypes.ERD]);
   const [loading, setLoading] = useState<any>({page: false, save: false});
   const [syntaxError, setSyntaxError] = useState<boolean>(false);
 
@@ -51,7 +51,7 @@ const Swimlanes1: React.FC<{prefix?: string}> = ({prefix = 'sequenceDiagram'}) =
     save();
   }, [value, id]);
 
-  const onExport = useCallback(() => exportAsImage(diagram.current, 'swimlanes-diagram'), [diagram]);
+  const onExport = useCallback(() => exportAsImage(diagram.current, 'erd-diagram'), [diagram]);
 
   const update = useCallback(() => {
     if(!id) {
@@ -67,7 +67,7 @@ const Swimlanes1: React.FC<{prefix?: string}> = ({prefix = 'sequenceDiagram'}) =
   const save = useCallback(() => {
     setLoading({...loading, save: true});
 
-    DiagramsClient.addDiagram(value, diagramTypes.SWIMLANE)
+    DiagramsClient.addDiagram(value, diagramTypes.ERD)
       .then(({ diagram }) => {
         setLoading({...loading, save: false});
         navigate(diagram.id);
@@ -82,10 +82,10 @@ const Swimlanes1: React.FC<{prefix?: string}> = ({prefix = 'sequenceDiagram'}) =
   const addPrefix = useCallback((value: string = '') => `${prefix}\n${value}`, [prefix]);
 
   return (
-    <div className="swimlanes">
-      <div className="swimlanes__top">
-        <h2>Swimlanes</h2>
-        <div className="swimlanes__top_buttons">
+    <div className="erd">
+      <div className="erd__top">
+        <h2>Entity Relationship Diagram</h2>
+        <div className="erd__top_buttons">
           <Button
             icon={<DownloadOutlined/>}
             onClick={onExport}
@@ -97,8 +97,8 @@ const Swimlanes1: React.FC<{prefix?: string}> = ({prefix = 'sequenceDiagram'}) =
           </Button>
         </div>
       </div>
-      <div className="swimlanes__content">
-        <div className="swimlanes__content_input">
+      <div className="erd__content">
+        <div className="erd__content_input">
         <TextArea
           value={valueWithoutPrefix}
           disabled={loading.page || loading.save}
@@ -107,13 +107,13 @@ const Swimlanes1: React.FC<{prefix?: string}> = ({prefix = 'sequenceDiagram'}) =
           }}
         />
         </div>
-        <div ref={diagram} className="swimlanes__content_diagram">
+        <div ref={diagram} className="erd__content_diagram">
           {!loading.page
             ? <Mermaid id='diagram' mmd={value} emitError={(val) => setSyntaxError(val)}/> 
             : <Spin tip='Loading...' size="large"/>}
         </div>
       </div>
-      <div className="swimlanes__buttons">
+      <div className="erd__buttons">
         <Button onClick={() => setValue('')}>Clear</Button>
         <Button
           type="primary"
@@ -128,4 +128,4 @@ const Swimlanes1: React.FC<{prefix?: string}> = ({prefix = 'sequenceDiagram'}) =
   )
 }
 
-export default Swimlanes;
+export default Erd;
