@@ -1,6 +1,7 @@
 .diagram {
   width: 80%;
-  margin: 20px auto;
+  margin: 0 auto;
+  padding: 20px 0;
   &__top, &__content {
     display: flex;
     justify-content: space-between;

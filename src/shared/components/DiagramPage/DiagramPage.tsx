@@ -18,7 +18,7 @@ const DiagramPage: React.FC<{type: diagramTypes}> = ({ type }) => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const diagram: any = useRef();
+  const diagramRef: any = useRef();
 
   useEffect(() => {
     if (!id) {
@@ -46,7 +46,9 @@ const DiagramPage: React.FC<{type: diagramTypes}> = ({ type }) => {
     save();
   }, [value, id]);
 
-  const onExport = useCallback(() => exportAsImage(diagram.current, `${type}-diagram`), [diagram]);
+  const onExport = useCallback(() => {
+    exportAsImage(diagramRef.current, `${type}-diagram`);
+  }, [diagramRef]);
 
   const update = useCallback(() => {
     if(!id) {
@@ -102,7 +104,7 @@ const DiagramPage: React.FC<{type: diagramTypes}> = ({ type }) => {
           }}
         />
         </div>
-        <div ref={diagram} className="diagram__content_diagram">
+        <div ref={diagramRef} className="diagram__content_diagram">
           {!loading.page
             ? <Mermaid id='diagram' mmd={value} emitError={(val) => setSyntaxError(val)}/> 
             : <Spin tip='Loading...' size="large"/>}

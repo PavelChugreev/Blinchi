@@ -46,20 +46,22 @@ const Home = () => {
 
   return (
     <div className="home">
-      <h1>Blinchi.com</h1>
-      <div className='nav-buttons'>
-        <Button>
-          <Link to={diagramPath[diagramTypes.SWIMLANE]}>{diagramTitles[diagramTypes.SWIMLANE]}</Link>
-        </Button>
-        <Button>
-          <Link to={diagramPath[diagramTypes.ERD]}>{diagramTitles[diagramTypes.ERD]}</Link>
-        </Button>
-        <Button>
-          <Link to='mock-api'>Mock Api</Link>
-        </Button>
+      <div className="home__top">
+        <h1>Blinchi.com</h1>
+        <nav className='home__nav'>
+          <Button>
+            <Link to={diagramPath[diagramTypes.SWIMLANE]}>{diagramTitles[diagramTypes.SWIMLANE]}</Link>
+          </Button>
+          <Button>
+            <Link to={diagramPath[diagramTypes.ERD]}>{diagramTitles[diagramTypes.ERD]}</Link>
+          </Button>
+          <Button>
+            <Link to='mock-api'>Mock Api</Link>
+          </Button>
+        </nav>
       </div>
       {diagrams &&
-        <div className='diagrams'>
+        <div className='home__diagrams-table'>
           <Divider orientation="left"><h3>Diagrams</h3></Divider>
           <List
             bordered
@@ -88,17 +90,17 @@ const Home = () => {
                 </List.Item>
             )}}
           />
+          <div className="home__diagrams-table_pagination">
+            <Pagination
+              defaultCurrent={1}
+              current={pagination.current}
+              total={pagination.total}
+              pageSize={10}
+              onChange={(page, size) => onChangePage(page, size)} 
+            />
+          </div>
         </div>
       }
-      <div className="pagination">
-        <Pagination
-          defaultCurrent={1}
-          current={pagination.current}
-          total={pagination.total}
-          pageSize={10}
-          onChange={(page, size) => onChangePage(page, size)} 
-        />
-      </div>
     </div>
   )
 }
