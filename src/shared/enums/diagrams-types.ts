@@ -10,7 +10,7 @@ export const diagramTitles = {
 
 export const diagramPrefix = {
   [diagramTypes.SWIMLANE]: 'sequenceDiagram',
-  [diagramTypes.ERD]: 'classDiagram'
+  [diagramTypes.ERD]: 'erDiagram'
 }
 
 export const diagramPath = {
