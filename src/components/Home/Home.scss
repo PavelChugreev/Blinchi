@@ -1,13 +1,31 @@
 .home {
-  width: 80%;
   margin: 70px auto 0;
-  text-align: center;
-  .main {
+  &__top {
+    text-align: center;
+  }
+  &__nav {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 20px;
-    
     padding: 10px;
+  }
+
+  &__diagrams-table {
+    width: 60%;
+    margin: 0 auto;
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+    }
+  
+    h3 {
+      margin: 0;
+    }
+
+    &_pagination {
+      padding: 10px 0 0 ;
+      text-align: start;
+    }
   }
 }
