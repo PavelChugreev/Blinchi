@@ -9,8 +9,7 @@ import './App.scss';
 const App = () => {
   return (
     <Routes>
-      <Route path="" element={<Navigate to='blinchi' />} />
-      <Route path="blinchi" element={<Outlet/>}>
+      <Route path="" element={<Outlet/>}>
         <Route index element={<Home/>}/>
         <Route path={diagramPath[diagramTypes.SWIMLANE]} element={<DiagramPage type={diagramTypes.SWIMLANE}/>}>
           <Route path=":id" element={<DiagramPage type={diagramTypes.SWIMLANE}/>}/>
@@ -20,7 +19,7 @@ const App = () => {
         </Route>
         <Route path="mock-api" element={<Mock/>}/>
       </Route>
-      <Route path="*" element={<Navigate to='blinchi' />}/>
+      <Route path="*" element={<Navigate to="" />}/>
     </Routes>
   )
 }

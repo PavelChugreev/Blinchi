@@ -7,9 +7,12 @@ import './Mock.scss';
 
 const Mock = () => (
   <div className='container'>
-    <Button>
-      <Link to='/'>Home</Link>
-    </Button>
+    <div className='header'>
+      <h2>Mock API Tree (developing on progress)</h2>
+      <Button>
+        <Link to='/'>Home</Link>
+      </Button> 
+    </div>
     {data.resources.map((item: INode) => <Node key={item.id} root item={item}/>)}
   </div>
 )
