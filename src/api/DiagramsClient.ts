@@ -6,7 +6,7 @@ import { diagramTypes, updatedByType } from "../shared/enums/diagrams-types";
 export class DiagramsClient extends BaseClient {
 
   static getAllDiagrams(config?: AxiosRequestConfig) {
-    return this.get<IGetAllDiagramsResponce>('api/v1/Diagrams?', {
+    return this.get<IGetAllDiagramsResponce>('api/v1/diagrams?', {
       params: {
         SortBy: 'updatedat_desc',
         ...config?.params
@@ -15,11 +15,11 @@ export class DiagramsClient extends BaseClient {
   }
   
   static getDiagram(id: string) {
-    return this.get<IGetDiagramResponce>(`api/v1/Diagrams/${id}`)
+    return this.get<IGetDiagramResponce>(`api/v1/diagrams/${id}`)
   }
 
   static addDiagram(text: string, type: diagramTypes) {
-    return this.post<IDiagramRequest, IGetDiagramResponce>('api/v1/Diagrams', {
+    return this.post<IDiagramRequest, IGetDiagramResponce>('api/v1/diagrams', {
       type,
       data: window.btoa(text),
       updatedBy: updatedByType.WEB_REACT
@@ -27,7 +27,7 @@ export class DiagramsClient extends BaseClient {
   }
 
   static updateDiagram(id: string, data: string) {
-    return this.put<IDiagramRequest>(`api/v1/Diagrams/${id}`, {
+    return this.put<IDiagramRequest>(`api/v1/diagrams/${id}`, {
       id,
       data: window.btoa(data),
       updatedBy: updatedByType.WEB_REACT

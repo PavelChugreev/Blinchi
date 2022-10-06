@@ -3,7 +3,7 @@ import { errorMessages } from '../shared/enums/error-types';
 import HttpStatusCode from '../shared/enums/http-codes';
 
 export class BaseClient {
-  static baseUrl = 'https://api.blinchi.com'
+  static baseUrl = 'https://g11evfy2rr.apistubs.io'
 
   static get defaultOptions(): AxiosRequestConfig {
     return {
